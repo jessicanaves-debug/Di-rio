@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Meu Painel ✨ Jéssica</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #2DD4A0;
+  --green-dark: #1aab7e;
+  --green-light: #e0faf3;
+  --purple: #a78bfa;
+  --purple-light: #ede9fe;
+  --yellow: #fbbf24;
+  --yellow-light: #fef3c7;
+  --pink: #f472b6;
+  --pink-light: #fce7f3;
+  --blue: #60a5fa;
+  --blue-light: #dbeafe;
+  --orange: #fb923c;
+  --orange-light: #ffedd5;
+  --bg: #f0fdf8;
+  --card: #ffffff;
+  --text: #1e293b;
+  --text2: #64748b;
+  --text3: #94a3b8;
+  --border: rgba(0,0,0,0.07);
+  --radius: 18px;
+  --radius-sm: 12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; background: var(--bg); font-family: 'Nunito', sans-serif; color: var(--text); overflow-x: hidden; }
+
+/* NAV */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--border); display: flex; z-index: 100; padding-bottom: env(safe-area-inset-bottom); box-shadow: 0 -4px 20px rgba(0,0,0,0.08); }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px; cursor: pointer; transition: all 0.2s; gap: 3px; }
+.nav-item .nav-icon { font-size: 22px; transition: transform 0.2s; }
+.nav-item .nav-label { font-size: 10px; font-weight: 700; color: var(--text3); transition: color 0.2s; }
+.nav-item.active .nav-label { color: var(--green-dark); }
+.nav-item.active .nav-icon { transform: scale(1.15); }
+.nav-item.active { background: var(--green-light); border-radius: 12px 12px 0 0; }
+
+/* PAGES */
+.page { display: none; min-height: 100vh; padding: 0 0 80px; }
+.page.active { display: block; }
+
+/* HEADER */
+.page-header { padding: 20px 18px 14px; background: linear-gradient(135deg, #2DD4A0 0%, #1aab7e 100%); color: white; position: relative; overflow: hidden; }
+.page-header::before { content: ''; position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+.page-header::after { content: ''; position: absolute; bottom: -40px; left: 40%; width: 90px; height: 90px; background: rgba(255,255,255,0.08); border-radius: 50%; }
+.header-emoji { font-size: 32px; margin-bottom: 4px; }
+.header-title { font-family: 'Fredoka One', cursive; font-size: 26px; font-weight: 400; }
+.header-sub { font-size: 13px; opacity: 0.85; margin-top: 2px; font-weight: 600; }
+.page-header.purple { background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%); }
+.page-header.orange { background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%); }
+.page-header.pink { background: linear-gradient(135deg, #f472b6 0%, #db2777 100%); }
+.page-header.blue { background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%); }
+
+/* CARDS */
+.section { padding: 14px 16px 0; }
+.section-label { font-size: 11px; font-weight: 800; color: var(--text3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.card { background: var(--card); border-radius: var(--radius); border: 1.5px solid var(--border); margin-bottom: 12px; overflow: hidden; }
+.card-header { padding: 14px 16px 10px; display: flex; align-items: center; gap: 10px; }
+.card-title { font-size: 15px; font-weight: 800; color: var(--text); }
+.card-body { padding: 0 16px 14px; }
+
+/* PROGRESS */
+.prog-bar { height: 10px; background: #e2e8f0; border-radius: 99px; overflow: hidden; }
+.prog-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--green-dark)); border-radius: 99px; transition: width 0.5s cubic-bezier(.4,2,.6,1); }
+.prog-fill.purple { background: linear-gradient(90deg, var(--purple), #7c3aed); }
+.prog-fill.orange { background: linear-gradient(90deg, var(--orange), #ea580c); }
+
+/* TASK ROW */
+.task-item { display: flex; align-items: center; gap: 12px; padding: 11px 16px; border-bottom: 1px solid #f1f5f9; cursor: pointer; transition: background 0.15s; }
+.task-item:last-child { border-bottom: none; }
+.task-item:active { background: #f8fafc; }
+.task-check { width: 24px; height: 24px; border-radius: 50%; border: 2.5px solid #cbd5e1; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
+.task-check.done { background: var(--green); border-color: var(--green); }
+.task-check.done::after { content: '✓'; font-size: 13px; color: white; font-weight: 800; }
+.task-text { flex: 1; font-size: 14px; font-weight: 600; color: var(--text); }
+.task-text.done { text-decoration: line-through; color: var(--text3); }
+.task-tag { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 99px; }
+
+/* METRICS ROW */
+.metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.metric-card { background: var(--card); border-radius: var(--radius-sm); border: 1.5px solid var(--border); padding: 14px; }
+.metric-val { font-family: 'Fredoka One', cursive; font-size: 28px; color: var(--text); }
+.metric-label { font-size: 11px; font-weight: 700; color: var(--text2); margin-top: 2px; }
+
+/* STUDY BLOCKS */
+.study-item { display: flex; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; }
+.study-item:last-child { border-bottom: none; }
+.study-time { font-size: 11px; font-weight: 800; color: var(--text3); min-width: 68px; padding-top: 2px; }
+.study-body { flex: 1; }
+.study-name { font-size: 14px; font-weight: 800; color: var(--text); }
+.study-desc { font-size: 12px; color: var(--text2); margin-top: 2px; line-height: 1.4; }
+
+/* WEEK NAV */
+.week-nav { display: flex; gap: 6px; overflow-x: auto; padding: 2px 0 6px; scrollbar-width: none; }
+.week-nav::-webkit-scrollbar { display: none; }
+.wday { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 6px 14px; font-size: 13px; font-weight: 800; color: var(--text2); cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+.wday.active { background: var(--green); color: white; border-color: var(--green); }
+
+/* NUTRI MEAL */
+.meal-item { padding: 12px 16px; border-bottom: 1px solid #f1f5f9; display: flex; gap: 10px; align-items: flex-start; }
+.meal-item:last-child { border-bottom: none; }
+.meal-check { width: 26px; height: 26px; border-radius: 50%; border: 2.5px solid #cbd5e1; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; transition: all 0.2s; margin-top: 2px; }
+.meal-check.done { background: var(--orange); border-color: var(--orange); }
+.meal-check.done::after { content: '✓'; font-size: 13px; color: white; font-weight: 800; }
+.meal-info { flex: 1; }
+.meal-name { font-size: 14px; font-weight: 800; color: var(--text); }
+.meal-time { font-size: 11px; font-weight: 700; color: var(--text3); margin-bottom: 3px; }
+.meal-foods { font-size: 12px; color: var(--text2); line-height: 1.5; }
+
+/* SUPL */
+.supl-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; }
+.supl-item:last-child { border-bottom: none; }
+.supl-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* LINKS */
+.link-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; text-decoration: none; }
+.link-item:last-child { border-bottom: none; }
+.link-icon { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.link-info { flex: 1; }
+.link-name { font-size: 14px; font-weight: 800; color: var(--text); }
+.link-sub { font-size: 11px; color: var(--text2); margin-top: 1px; }
+.link-arr { font-size: 18px; color: var(--text3); }
+
+/* BADGES */
+.badge { display: inline-block; font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 99px; }
+.b-green { background: var(--green-light); color: var(--green-dark); }
+.b-purple { background: var(--purple-light); color: #6d28d9; }
+.b-amber { background: var(--yellow-light); color: #92400e; }
+.b-blue { background: var(--blue-light); color: #1d4ed8; }
+.b-pink { background: var(--pink-light); color: #9d174d; }
+.b-orange { background: var(--orange-light); color: #9a3412; }
+
+/* PESO */
+.peso-input { display: flex; gap: 8px; margin-bottom: 10px; }
+.peso-input input { flex: 1; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: 'Nunito', sans-serif; font-weight: 700; background: #f8fafc; color: var(--text); outline: none; }
+.peso-input input:focus { border-color: var(--orange); }
+.peso-btn { padding: 12px 18px; background: var(--orange); color: white; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; }
+.medidas-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.medidas-row input { padding: 10px 12px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: 'Nunito', sans-serif; font-weight: 600; background: #f8fafc; color: var(--text); outline: none; }
+.medidas-row input:focus { border-color: var(--orange); }
+.hist-row { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 1px solid #f1f5f9; }
+.hist-row:last-child { border-bottom: none; }
+.hist-date { font-size: 12px; font-weight: 700; color: var(--text3); min-width: 72px; }
+.hist-kg { font-size: 16px; font-weight: 800; color: var(--text); }
+.hist-extra { font-size: 11px; color: var(--text2); }
+
+/* SHOPPING LIST */
+.shop-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
+.shop-item:last-child { border-bottom: none; }
+.shop-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid #cbd5e1; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; }
+.shop-check.done { background: var(--green); border-color: var(--green); }
+.shop-check.done::after { content: '✓'; font-size: 11px; color: white; font-weight: 900; }
+.shop-text { flex: 1; font-size: 14px; font-weight: 600; }
+.shop-text.done { text-decoration: line-through; color: var(--text3); }
+.shop-cat { font-size: 10px; font-weight: 800; }
+
+/* CERTS */
+.cert-item { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-bottom: 1px solid #f1f5f9; }
+.cert-item:last-child { border-bottom: none; }
+.cert-emo { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.cert-info { flex: 1; }
+.cert-name { font-size: 14px; font-weight: 800; color: var(--text); }
+.cert-meta { font-size: 11px; color: var(--text2); margin-top: 2px; }
+
+/* DICA BOX */
+.dica-box { background: linear-gradient(135deg, #fef3c7, #fde68a); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px; border: 1.5px solid #fbbf24; }
+.dica-title { font-size: 13px; font-weight: 800; color: #92400e; margin-bottom: 6px; }
+.dica-text { font-size: 13px; color: #78350f; line-height: 1.5; }
+
+/* MODAL */
+.modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: flex-end; }
+.modal-bg.open { display: flex; }
+.modal { background: white; border-radius: 24px 24px 0 0; padding: 20px 18px 30px; width: 100%; max-height: 90vh; overflow-y: auto; }
+.modal-handle { width: 40px; height: 4px; background: #e2e8f0; border-radius: 99px; margin: 0 auto 16px; }
+.modal h3 { font-family: 'Fredoka One', cursive; font-size: 22px; margin-bottom: 16px; color: var(--text); }
+.modal input, .modal select { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; font-family: 'Nunito', sans-serif; font-weight: 600; background: #f8fafc; color: var(--text); margin-bottom: 10px; outline: none; }
+.modal input:focus, .modal select:focus { border-color: var(--purple); }
+.modal-btns { display: flex; gap: 10px; margin-top: 4px; }
+.btn-save { flex: 1; background: var(--purple); color: white; border: none; border-radius: var(--radius-sm); padding: 14px; font-size: 15px; font-weight: 800; font-family: 'Nunito', sans-serif; cursor: pointer; }
+.btn-cancel { flex: 1; background: #f1f5f9; color: var(--text2); border: none; border-radius: var(--radius-sm); padding: 14px; font-size: 15px; font-weight: 800; font-family: 'Nunito', sans-serif; cursor: pointer; }
+
+/* SKILLS */
+.skill-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
+.skill-label { font-size: 13px; font-weight: 700; color: var(--text); min-width: 130px; }
+.skill-bar { flex: 1; height: 8px; background: #e2e8f0; border-radius: 99px; overflow: hidden; }
+.skill-fill { height: 100%; background: linear-gradient(90deg, var(--purple), #7c3aed); border-radius: 99px; }
+.skill-pct { font-size: 12px; font-weight: 800; color: var(--text3); min-width: 30px; text-align: right; }
+
+/* WATER */
+.water-row { display: flex; align-items: center; gap: 10px; }
+.water-count { font-family: 'Fredoka One', cursive; font-size: 32px; color: var(--blue); }
+.water-btns { display: flex; gap: 6px; }
+.water-btn { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--blue); background: none; font-size: 18px; color: var(--blue); cursor: pointer; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.water-btn:active { background: var(--blue-light); }
+.water-drops { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+.drop { font-size: 16px; transition: all 0.2s; }
+.drop.empty { filter: grayscale(1); opacity: 0.3; }
+
+/* PROFILE */
+.profile-card { background: white; border-radius: var(--radius); border: 1.5px solid var(--border); padding: 18px; margin-bottom: 12px; display: flex; align-items: center; gap: 14px; }
+.avatar-big { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--green), var(--green-dark)); display: flex; align-items: center; justify-content: center; font-family: 'Fredoka One', cursive; font-size: 26px; color: white; }
+.profile-name { font-family: 'Fredoka One', cursive; font-size: 22px; color: var(--text); }
+.profile-sub { font-size: 12px; font-weight: 700; color: var(--text2); margin-top: 2px; }
+
+/* EMPTY STATE */
+.empty { text-align: center; padding: 24px 16px; color: var(--text3); font-size: 14px; font-weight: 700; }
+.empty-emo { font-size: 36px; display: block; margin-bottom: 8px; }
+
+/* ADD BTN */
+.add-btn { width: 100%; background: none; border: 2px dashed #cbd5e1; border-radius: var(--radius-sm); padding: 12px; font-size: 14px; font-weight: 800; color: var(--text2); cursor: pointer; font-family: 'Nunito', sans-serif; margin-top: 4px; }
+
+/* STUDY TIP */
+.tip-card { background: linear-gradient(135deg, #ede9fe, #ddd6fe); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; border: 1.5px solid #c4b5fd; }
+.tip-card .tip-emoji { font-size: 20px; margin-bottom: 6px; }
+.tip-card .tip-title { font-size: 13px; font-weight: 800; color: #5b21b6; margin-bottom: 4px; }
+.tip-card .tip-text { font-size: 12px; color: #6d28d9; line-height: 1.5; }
+
+/* TRILHA */
+.trilha-item { display: flex; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; align-items: flex-start; }
+.trilha-item:last-child { border-bottom: none; }
+.trilha-num { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; flex-shrink: 0; }
+.trilha-body { flex: 1; }
+.trilha-title { font-size: 14px; font-weight: 800; color: var(--text); }
+.trilha-sub { font-size: 12px; color: var(--text2); margin-top: 2px; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<!-- ===== PAGE: HOJE ===== -->
+<div id="page-hoje" class="page active">
+  <div class="page-header">
+    <div class="header-emoji">🌟</div>
+    <div class="header-title">Olá, Jéssica!</div>
+    <div class="header-sub" id="today-date-str">Carregando...</div>
+  </div>
+
+  <div class="section" style="margin-top:14px;">
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="metric-val" id="tasks-count">0/0</div>
+        <div class="metric-label">Tarefas feitas hoje</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val" id="tasks-pct" style="color:var(--green)">0%</div>
+        <div class="metric-label">Progresso do dia</div>
+      </div>
+    </div>
+    <div class="prog-bar" style="margin-bottom:4px;"><div class="prog-fill" id="main-prog" style="width:0%"></div></div>
+    <div style="font-size:11px;font-weight:700;color:var(--text3);margin-bottom:14px;text-align:right;" id="prog-msg">Vamos lá! 💪</div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🏠 Rotina da tarde (16:30–18:30)</div>
+    <div class="card" id="tarde-card"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🧠 Estudos de IA (18:30–20:00)</div>
+    <div class="card" id="study-today-card"></div>
+  </div>
+</div>
+
+<!-- ===== PAGE: ESTUDO ===== -->
+<div id="page-estudo" class="page">
+  <div class="page-header purple">
+    <div class="header-emoji">🧠</div>
+    <div class="header-title">Estudos de IA</div>
+    <div class="header-sub">18:30 – 20:00 · Seg a Sex</div>
+  </div>
+
+  <div class="section" style="margin-top:14px;">
+    <div class="section-label">📅 Semana atual</div>
+    <div class="week-nav" id="week-nav-study">
+      <div class="wday" onclick="selectStudyDay(1,this)">Seg</div>
+      <div class="wday" onclick="selectStudyDay(2,this)">Ter</div>
+      <div class="wday" onclick="selectStudyDay(3,this)">Qua</div>
+      <div class="wday" onclick="selectStudyDay(4,this)">Qui</div>
+      <div class="wday" onclick="selectStudyDay(5,this)">Sex</div>
+    </div>
+    <div class="card" id="study-day-card"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">💡 Dicas para estudar com eficiência</div>
+    <div class="tip-card">
+      <div class="tip-emoji">⏱️</div>
+      <div class="tip-title">Método Pomodoro</div>
+      <div class="tip-text">25min foco total + 5min pausa. Com 1h30 você faz 3 ciclos perfeitos entre 18:30 e 20h. Use o timer do celular!</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-emoji">🛠️</div>
+      <div class="tip-title">Aprenda fazendo, não só lendo</div>
+      <div class="tip-text">A cada conceito novo, abra o Claude e teste na hora. Entendeu prompting? Cria 5 prompts reais já!</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-emoji">✍️</div>
+      <div class="tip-title">Método Feynman simplificado</div>
+      <div class="tip-text">Depois de cada sessão, escreva 3 linhas explicando o que aprendeu como se fosse para uma amiga. Se travar, é sinal que precisa revisar.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-emoji">🐙</div>
+      <div class="tip-title">GitHub desde o dia 1</div>
+      <div class="tip-text">Salve tudo que você pratica no GitHub. Além de aprender git, seu portfólio já começa a crescer desde a primeira semana!</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-emoji">🎯</div>
+      <div class="tip-title">Uma coisa por vez</div>
+      <div class="tip-text">Não pula pra LangChain antes de dominar a API do Claude. A trilha foi montada pra respeitar isso. Confie no processo!</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🔗 Links para estudar</div>
+    <div class="card">
+      <a class="link-item" href="https://docs.anthropic.com" target="_blank">
+        <div class="link-icon" style="background:var(--purple-light);">🦾</div>
+        <div class="link-info"><div class="link-name">Documentação Claude</div><div class="link-sub">API, Prompt Engineering, MCP · Gratuito</div></div>
+        <span class="link-arr">›</span>
+      </a>
+      <a class="link-item" href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank">
+        <div class="link-icon" style="background:var(--purple-light);">📖</div>
+        <div class="link-info"><div class="link-name">Prompt Engineering Guide</div><div class="link-sub">Guia oficial Anthropic · Gratuito</div></div>
+        <span class="link-arr">›</span>
+      </a>
+      <a class="link-item" href="https://developers.google.com/machine-learning/crash-course" target="_blank">
+        <div class="link-icon" style="background:var(--yellow-light);">🤖</div>
+        <div class="link-info"><div class="link-name">Google ML Crash Course</div><div class="link-sub">Fundamentos de Machine Learning · Gratuito</div></div>
+        <span class="link-arr">›</span>
+      </a>
+      <a class="link-item" href="https://www.deeplearning.ai" target="_blank">
+        <div class="link-icon" style="background:var(--yellow-light);">🧠</div>
+        <div class="link-info"><div class="link-name">DeepLearning.AI (Andrew Ng)</div><div class="link-sub">Cursos de IA e ML · Pago/gratuito</div></div>
+        <span class="link-arr">›</span>
+      </a>
+      <a class="link-item" href="https://huggingface.co/learn" target="_blank">
+        <div class="link-icon" style="background:var(--blue-light);">🤗</div>
+        <div class="link-info"><div class="link-name">Hugging Face Course</div><div class="link-sub">LLMs, Transformers, Fine-tuning · Gratuito</div></div>
+        <span class="link-arr">›</span>
+      </a>
+      <a class="link-item" href="https://www.kaggle.com/learn/python" target="_blank">
+        <div class="link-icon" style="background:var(--green-light);">🐍</div>
+        <div class="link-info"><div class="link-name">Kaggle Python + ML</div><div class="link-sub">Prático, gratuito, com certificado</div></div>
+        <span class="link-arr">›</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🏅 Onde tirar certificados</div>
+    <div class="card">
+      <a class="link-item" href="https://www.deeplearning.ai/courses/" target="_blank">
+        <div class="link-icon" style="background:var(--yellow-light);">🏅</div>
+        <div class="link-info"><div class="link-name">DeepLearning.AI Certificates</div><div class="link-sub">ML, Prompt Eng., LangChain, RAG</div></div>
+        <span class="link-arr">›</span>
+      </a>
+      <a class="link-item" href="https://www.coursera.org/browse/data-science/machine-learning" target="_blank">
+        <div class="link-icon" style="background:var(--blue-light);">🎓</div>
+        <div class="link-info"><div class="link-name">Coursera – Google / IBM AI</div><div class="link-sub">Certificados reconhecidos · Bolsa disponível</div></div>
+        <span class="link-arr">›</span>
+      </a>
+      <a class="link-item" href="https://aws.amazon.com/certification/certified-ai-practitioner/" target="_blank">
+        <div class="link-icon" style="background:var(--orange-light);">☁️</div>
+        <div class="link-info"><div class="link-name">AWS AI Practitioner</div><div class="link-sub">Certificação cloud + IA</div></div>
+        <span class="link-arr">›</span>
+      </a>
+      <a class="link-item" href="https://cloud.google.com/learn/certification/machine-learning-engineer" target="_blank">
+        <div class="link-icon" style="background:var(--blue-light);">☁️</div>
+        <div class="link-info"><div class="link-name">Google Cloud ML Engineer</div><div class="link-sub">Certificação oficial Google</div></div>
+        <span class="link-arr">›</span>
+      </a>
+      <a class="link-item" href="https://www.kaggle.com/learn" target="_blank">
+        <div class="link-icon" style="background:var(--green-light);">📜</div>
+        <div class="link-info"><div class="link-name">Kaggle (gratuito)</div><div class="link-sub">Python, ML, IA generativa</div></div>
+        <span class="link-arr">›</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🗺️ Trilha completa (6 meses)</div>
+    <div class="card">
+      <div class="trilha-item">
+        <div class="trilha-num" style="background:var(--yellow-light);color:#92400e;">1–2</div>
+        <div class="trilha-body"><div class="trilha-title">Fundamentos de IA e ML</div><div class="trilha-sub">Python para IA · ML conceitos · Redes neurais básicas<br><span class="badge b-amber" style="margin-top:4px;">Google ML · Kaggle</span></div></div>
+      </div>
+      <div class="trilha-item">
+        <div class="trilha-num" style="background:var(--purple-light);color:#6d28d9;">2–3</div>
+        <div class="trilha-body"><div class="trilha-title">Claude & Anthropic API</div><div class="trilha-sub">Prompt Engineering · Claude API · MCP · Claude Code<br><span class="badge b-purple" style="margin-top:4px;">Anthropic Docs</span></div></div>
+      </div>
+      <div class="trilha-item">
+        <div class="trilha-num" style="background:var(--blue-light);color:#1d4ed8;">3–4</div>
+        <div class="trilha-body"><div class="trilha-title">LLMs avançado & RAG</div><div class="trilha-sub">Fine-tuning · RAG · Embeddings · LangChain · Agentes<br><span class="badge b-blue" style="margin-top:4px;">Hugging Face · LangChain</span></div></div>
+      </div>
+      <div class="trilha-item">
+        <div class="trilha-num" style="background:var(--green-light);color:var(--green-dark);">4–5</div>
+        <div class="trilha-body"><div class="trilha-title">Projetos & portfólio</div><div class="trilha-sub">Apps com Claude API · Chatbots · GitHub portfólio<br><span class="badge b-green" style="margin-top:4px;">Build & publish</span></div></div>
+      </div>
+      <div class="trilha-item">
+        <div class="trilha-num" style="background:var(--pink-light);color:#9d174d;">5–6</div>
+        <div class="trilha-body"><div class="trilha-title">Certificações</div><div class="trilha-sub">AWS AI Practitioner · Google Cloud AI · DeepLearning.ai<br><span class="badge b-pink" style="margin-top:4px;">Get certified!</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE: NUTRIÇÃO ===== -->
+<div id="page-nutri" class="page">
+  <div class="page-header orange">
+    <div class="header-emoji">🥑</div>
+    <div class="header-title">Nutrição</div>
+    <div class="header-sub">Cardápio · Suplementos · Peso</div>
+  </div>
+
+  <div class="section" style="margin-top:14px;">
+    <div class="week-nav" id="week-nav-nutri"></div>
+
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="metric-val" id="meals-count" style="color:var(--orange)">0/6</div>
+        <div class="metric-label">Refeições feitas</div>
+      </div>
+      <div class="metric-card">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="water-count" id="agua-val">0</div>
+          <div class="water-btns">
+            <button class="water-btn" onclick="changeAgua(-1)">−</button>
+            <button class="water-btn" onclick="changeAgua(1)">+</button>
+          </div>
+        </div>
+        <div class="metric-label">Litros de água (meta: 2,5L)</div>
+        <div class="water-drops" id="water-drops"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🍽️ Cardápio do dia</div>
+    <div class="card" id="nutri-meals-card"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">💊 Suplementos do dia</div>
+    <div class="card">
+      <div class="supl-item">
+        <div class="supl-dot" style="background:#3b82f6;"></div>
+        <div style="flex:1;"><div style="font-size:14px;font-weight:800;">Creatina</div><div style="font-size:12px;color:var(--text2);">Todo dia · pós-treino ou manhã · lembre-se sempre!</div></div>
+        <input type="checkbox" style="width:20px;height:20px;accent-color:var(--green);cursor:pointer;" id="supl0" onchange="saveSupl(0,this.checked)">
+      </div>
+      <div class="supl-item">
+        <div class="supl-dot" style="background:#f472b6;"></div>
+        <div style="flex:1;"><div style="font-size:14px;font-weight:800;">Morozil</div><div style="font-size:12px;color:var(--text2);">Todo dia · conforme orientação da nutri</div></div>
+        <input type="checkbox" style="width:20px;height:20px;accent-color:var(--green);cursor:pointer;" id="supl1" onchange="saveSupl(1,this.checked)">
+      </div>
+      <div class="supl-item">
+        <div class="supl-dot" style="background:#a78bfa;"></div>
+        <div style="flex:1;"><div style="font-size:14px;font-weight:800;">Cactin</div><div style="font-size:12px;color:var(--text2);">Todo dia · conforme orientação da nutri</div></div>
+        <input type="checkbox" style="width:20px;height:20px;accent-color:var(--green);cursor:pointer;" id="supl2" onchange="saveSupl(2,this.checked)">
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">⚖️ Registrar peso e medidas</div>
+    <div class="card">
+      <div style="padding:14px 16px;">
+        <div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:8px;">Peso atual (kg)</div>
+        <div class="peso-input">
+          <input type="number" id="peso-in" placeholder="ex: 65.5" step="0.1">
+          <button class="peso-btn" onclick="savePeso()">Salvar</button>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:var(--text2);margin-bottom:8px;">Medidas (cm) — opcional</div>
+        <div class="medidas-row">
+          <input type="number" id="cintura-in" placeholder="Cintura" step="0.1">
+          <input type="number" id="quadril-in" placeholder="Quadril" step="0.1">
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--text3);">Recomendado: pesar 1x por semana, sempre no mesmo horário ✨</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">📊 Histórico de peso</div>
+    <div class="card" id="peso-hist-card">
+      <div class="empty"><span class="empty-emo">⚖️</span>Nenhum registro ainda.<br>Comece salvando seu peso!</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">✅ Check do dia</div>
+    <div class="card" id="nutri-checks-card"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🛒 Lista de compras semanal</div>
+    <div class="card" id="shop-card"></div>
+    <button class="add-btn" onclick="resetShop()">🔄 Reiniciar lista da semana</button>
+  </div>
+</div>
+
+<!-- ===== PAGE: CURRÍCULO ===== -->
+<div id="page-curriculo" class="page">
+  <div class="page-header pink">
+    <div class="header-emoji">🎓</div>
+    <div class="header-title">Meu Currículo</div>
+    <div class="header-sub">Cursos · Certificados · Habilidades</div>
+  </div>
+
+  <div class="section" style="margin-top:14px;">
+    <div class="profile-card">
+      <div class="avatar-big">J</div>
+      <div>
+        <div class="profile-name">Jéssica Naves</div>
+        <div class="profile-sub">Estudante de IA · Foco em Claude & Anthropic</div>
+        <div style="margin-top:6px;"><span class="badge b-green">Em formação 🚀</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🏅 Certificados concluídos</div>
+    <div class="card" id="certs-card">
+      <div class="empty"><span class="empty-emo">🏅</span>Nenhum certificado ainda.<br>Você está começando agora!</div>
+    </div>
+    <button class="add-btn" onclick="openCertModal()">+ Adicionar certificado ou curso</button>
+  </div>
+
+  <div class="section">
+    <div class="section-label">📈 Habilidades em desenvolvimento</div>
+    <div class="card" style="padding:14px 16px;">
+      <div class="skill-row"><span class="skill-label">Prompt Engineering</span><div class="skill-bar"><div class="skill-fill" style="width:10%"></div></div><span class="skill-pct">10%</span></div>
+      <div class="skill-row"><span class="skill-label">Claude API</span><div class="skill-bar"><div class="skill-fill" style="width:5%"></div></div><span class="skill-pct">5%</span></div>
+      <div class="skill-row"><span class="skill-label">Python para IA</span><div class="skill-bar"><div class="skill-fill" style="width:5%"></div></div><span class="skill-pct">5%</span></div>
+      <div class="skill-row"><span class="skill-label">Machine Learning</span><div class="skill-bar"><div class="skill-fill" style="width:5%"></div></div><span class="skill-pct">5%</span></div>
+      <div class="skill-row"><span class="skill-label">LLMs & RAG</span><div class="skill-bar"><div class="skill-fill" style="width:0%"></div></div><span class="skill-pct">0%</span></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">🔗 Links para certificações</div>
+    <div class="card">
+      <a class="link-item" href="https://www.deeplearning.ai/courses/" target="_blank">
+        <div class="link-icon" style="background:var(--yellow-light);">🏅</div>
+        <div class="link-info"><div class="link-name">DeepLearning.AI</div><div class="link-sub">ML, Prompt Eng., LangChain</div></div>
+        <span class="link-arr">›</span>
+      </a>
+      <a class="link-item" href="https://www.coursera.org/browse/data-science/machine-learning" target="_blank">
+        <div class="link-icon" style="background:var(--blue-light);">🎓</div>
+        <div class="link-info"><div class="link-name">Coursera – Google / IBM AI</div><div class="link-sub">Certificados reconhecidos</div></div>
+        <span class="link-arr">›</span>
+      </a>
+      <a class="link-item" href="https://aws.amazon.com/certification/certified-ai-practitioner/" target="_blank">
+        <div class="link-icon" style="background:var(--orange-light);">☁️</div>
+        <div class="link-info"><div class="link-name">AWS AI Practitioner</div><div class="link-sub">Certificação cloud + IA</div></div>
+        <span class="link-arr">›</span>
+      </a>
+      <a class="link-item" href="https://www.kaggle.com/learn" target="_blank">
+        <div class="link-icon" style="background:var(--green-light);">📜</div>
+        <div class="link-info"><div class="link-name">Kaggle (gratuito)</div><div class="link-sub">Python, ML, IA generativa</div></div>
+        <span class="link-arr">›</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <div class="nav-item active" onclick="gotoPage('hoje',this)">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">Hoje</span>
+  </div>
+  <div class="nav-item" onclick="gotoPage('estudo',this)">
+    <span class="nav-icon">🧠</span>
+    <span class="nav-label">Estudos</span>
+  </div>
+  <div class="nav-item" onclick="gotoPage('nutri',this)">
+    <span class="nav-icon">🥑</span>
+    <span class="nav-label">Nutrição</span>
+  </div>
+  <div class="nav-item" onclick="gotoPage('curriculo',this)">
+    <span class="nav-icon">🎓</span>
+    <span class="nav-label">Currículo</span>
+  </div>
+</nav>
+
+<!-- MODAL CERT -->
+<div class="modal-bg" id="cert-modal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h3>Adicionar certificado 🏅</h3>
+    <input type="text" id="c-name" placeholder="Nome do curso / certificado">
+    <input type="text" id="c-plat" placeholder="Plataforma (ex: Coursera, Anthropic)">
+    <input type="text" id="c-date" placeholder="Data (ex: Maio 2025)">
+    <select id="c-area">
+      <option value="">Área</option>
+      <option value="ia">IA / Machine Learning</option>
+      <option value="claude">Claude / Anthropic</option>
+      <option value="cloud">Cloud / AWS / GCP</option>
+      <option value="prog">Programação</option>
+      <option value="outro">Outro</option>
+    </select>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeCertModal()">Cancelar</button>
+      <button class="btn-save" onclick="saveCert()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DAYS_FULL=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+const DAYS_SHORT=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const now=new Date();
+const todayDow=now.getDay();
+const todayStr=now.toISOString().slice(0,10);
+let currentNutriDow=todayDow;
+
+function ld(k,d){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+function dayKey(p,d){return p+'_'+d+'_'+todayStr;}
+
+function gotoPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(el)el.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ===== HOJE =====
+const FIXED_TASKS=[
+  {id:'comida',label:'Terminar a comida',tag:'16:30–17:30',tc:'b-orange'},
+  {id:'louça',label:'Lavar a louça do almoço',tag:'tarde',tc:'b-blue'},
+  {id:'guarda_louça',label:'Guardar louça cedo',tag:'tarde',tc:'b-blue'},
+];
+const VAR_TASKS={
+  1:[{id:'guardar_roupa',label:'Guardar roupa',tag:'tarde',tc:'b-purple'}],
+  3:[{id:'lavar_roupa',label:'Lavar roupa',tag:'tarde',tc:'b-purple'},{id:'lavar_banheiro',label:'Lavar banheiro',tag:'tarde',tc:'b-blue'}],
+  4:[{id:'limpar_fogao',label:'Limpar fogão',tag:'tarde',tc:'b-pink'}],
+  5:[{id:'guardar_roupa_sx',label:'Guardar roupa',tag:'tarde',tc:'b-purple'}],
+};
+const ASPIRAR_DAYS=[1,3,5];
+
+function getTasks(dow){
+  let t=[...FIXED_TASKS];
+  if(VAR_TASKS[dow])t=[...t,...VAR_TASKS[dow]];
+  if(ASPIRAR_DAYS.includes(dow))t.push({id:'aspirar',label:'Aspirar e organizar a casa',tag:'tarde',tc:'b-green'});
+  return t;
+}
+
+function renderTodayTasks(){
+  const tasks=getTasks(todayDow);
+  const sk=dayKey('tasks',todayDow);
+  let state=ld(sk,{});
+  const c=document.getElementById('tarde-card');
+  c.innerHTML='';
+  tasks.forEach(t=>{
+    const done=!!state[t.id];
+    const row=document.createElement('div');
+    row.className='task-item';
+    row.onclick=()=>toggleTask(t.id);
+    row.innerHTML=`<div class="task-check ${done?'done':''}"></div>
+      <span class="task-text ${done?'done':''}">${t.label}</span>
+      <span class="badge ${t.tc}">${t.tag}</span>`;
+    c.appendChild(row);
+  });
+  updateProg();
+}
+
+function toggleTask(id){
+  const sk=dayKey('tasks',todayDow);
+  let s=ld(sk,{});s[id]=!s[id];sv(sk,s);renderTodayTasks();
+}
+
+function updateProg(){
+  const tasks=getTasks(todayDow);
+  const sk=dayKey('tasks',todayDow);
+  let s=ld(sk,{});
+  const done=tasks.filter(t=>s[t.id]).length;
+  const total=tasks.length;
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('tasks-count').textContent=done+'/'+total;
+  document.getElementById('tasks-pct').textContent=pct+'%';
+  document.getElementById('main-prog').style.width=pct+'%';
+  const msgs=['Vamos lá! 💪','Boa! Continua! 🔥','Na metade! 🌟','Quase lá! ⚡','Incrível! 🎉','Arrasou! 🏆'];
+  document.getElementById('prog-msg').textContent=msgs[Math.min(Math.floor(pct/20),5)];
+}
+
+const STUDY_SCHEDULE={
+  1:{tema:'Fundamentos de IA',blocos:[
+    {time:'18:30–19:00',name:'Python básico para IA',desc:'Sintaxe, listas, funções – pratique no Kaggle Learn'},
+    {time:'19:00–19:30',name:'Conceitos de ML',desc:'Tipos de aprendizado, classificação, regressão – Google ML Crash Course'},
+    {time:'19:30–20:00',name:'Prática no Colab',desc:'Abra o Google Colab e escreva seu primeiro notebook'},
+  ]},
+  2:{tema:'APIs e LLMs',blocos:[
+    {time:'18:30–19:00',name:'Como funcionam os LLMs',desc:'Tokens, context window, temperatura – leia os docs Anthropic'},
+    {time:'19:00–19:30',name:'Claude API – primeiros passos',desc:'Autenticação, primeira chamada, parâmetros básicos'},
+    {time:'19:30–20:00',name:'Exercício prático',desc:'Faça uma chamada à API do Claude e experimente diferentes prompts'},
+  ]},
+  3:{tema:'Prompt Engineering',blocos:[
+    {time:'18:30–19:00',name:'Técnicas de prompting',desc:'Zero-shot, few-shot, chain-of-thought – Guia Anthropic'},
+    {time:'19:00–19:30',name:'System prompts e XML tags',desc:'Estrutura profissional de prompts com Claude'},
+    {time:'19:30–20:00',name:'Desafio: 5 prompts',desc:'Crie 5 prompts testando cada técnica aprendida'},
+  ]},
+  4:{tema:'Revisão + Mini Projeto',blocos:[
+    {time:'18:30–19:15',name:'Revisão da semana',desc:'Rever anotações dos 3 dias + escrever resumo (método Feynman)'},
+    {time:'19:15–20:00',name:'Mini projeto',desc:'Monte um chatbot simples usando a Claude API'},
+  ]},
+  5:{tema:'Aprofundamento livre',blocos:[
+    {time:'18:30–19:15',name:'Leitura técnica ou vídeo',desc:'Escolha um artigo, documentação ou vídeo sobre o tema da semana'},
+    {time:'19:15–20:00',name:'Registro no GitHub',desc:'Comite o que aprendeu + anote próximos passos no README'},
+  ]},
+};
+
+function renderStudyDay(dow){
+  const s=STUDY_SCHEDULE[dow];
+  const c=document.getElementById('study-day-card');
+  c.innerHTML='';
+  if(!s)return;
+  const h=document.createElement('div');
+  h.style.cssText='padding:12px 16px 8px;font-size:12px;font-weight:800;color:var(--text2);border-bottom:1px solid #f1f5f9;';
+  h.textContent='Tema: '+s.tema;
+  c.appendChild(h);
+  s.blocos.forEach(b=>{
+    const div=document.createElement('div');
+    div.className='study-item';
+    div.innerHTML=`<div class="study-time">${b.time}</div>
+      <div class="study-body"><div class="study-name">${b.name}</div><div class="study-desc">${b.desc}</div></div>`;
+    c.appendChild(div);
+  });
+}
+
+function selectStudyDay(dow,el){
+  document.querySelectorAll('#week-nav-study .wday').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderStudyDay(dow);
+}
+
+function renderStudyToday(){
+  const s=STUDY_SCHEDULE[todayDow];
+  const c=document.getElementById('study-today-card');
+  c.innerHTML='';
+  if(!s){c.innerHTML='<div class="empty"><span class="empty-emo">😴</span>Fim de semana! Descansa e recarrega!</div>';return;}
+  const h=document.createElement('div');
+  h.style.cssText='padding:12px 16px 8px;font-size:12px;font-weight:800;color:var(--text2);border-bottom:1px solid #f1f5f9;';
+  h.textContent='Hoje: '+s.tema;
+  c.appendChild(h);
+  s.blocos.forEach(b=>{
+    const div=document.createElement('div');
+    div.className='study-item';
+    div.innerHTML=`<div class="study-time">${b.time}</div>
+      <div class="study-body"><div class="study-name">${b.name}</div><div class="study-desc">${b.desc}</div></div>`;
+    c.appendChild(div);
+  });
+}
+
+// ===== NUTRIÇÃO =====
+const CARDAPIO_SEMANA={
+  1:[ // Segunda – Treino Perna 🦵
+    {nome:'Café · Tapioca com ovo e queijo branco + laranja',time:'5h40',foods:['1 tapioca (3 col. sopa de goma)','1 ovo mexido dentro','1 fatia queijo branco','1 laranja-baía']},
+    {nome:'Almoço · Músculo desfiado com arroz, feijão e salada',time:'10h',foods:['150g músculo cozido e desfiado','3 col. sopa arroz · 2 col. feijão','Alface + tomate + pepino + limão']},
+    {nome:'Tarde · 2 ovos cozidos + maçã',time:'Tarde',foods:['2 ovos cozidos','1 maçã fuji']},
+    {nome:'Jantar · Patinho moído com abobrinha e cenoura',time:'18h',foods:['120g patinho moído','Abobrinha + cenoura refogadas com alho','Tomate por cima']},
+  ],
+  2:[ // Terça – Treino Superior 💪 + Cardio
+    {nome:'Café · Omelete com tomate e cebolinha + banana',time:'5h40',foods:['2 ovos mexidos com tomate picado e cebolinha','1 banana-prata','Café preto sem açúcar']},
+    {nome:'Almoço · Patinho moído com arroz e salada',time:'10h',foods:['150g patinho moído com alho, sal e cominho','3 col. sopa arroz','Alface + tomate + pepino + cenoura ralada + limão']},
+    {nome:'Tarde · Iogurte com banana e canela',time:'Tarde',foods:['200g iogurte natural desnatado','1/2 banana fatiada','Canela à vontade']},
+    {nome:'Jantar · Alcatra grelhada com batata-doce e salada',time:'18h',foods:['120g alcatra grelhada','80g batata-doce cozida','Alface + beterraba + cenoura + limão']},
+  ],
+  3:[ // Quarta – Treino Perna 🦵 (tarde)
+    {nome:'Café · Iogurte com banana e canela',time:'5h40',foods:['200g iogurte natural desnatado','1 banana-prata fatiada','Canela à vontade']},
+    {nome:'Almoço · Coxão mole grelhado com arroz e salada',time:'10h',foods:['140g coxão mole grelhado','3 col. sopa arroz','Alface + cenoura + beterraba + azeite e limão']},
+    {nome:'Tarde · 2 ovos cozidos + laranja',time:'Tarde',foods:['2 ovos cozidos','1 laranja (a vitamina C ajuda a absorver o ferro!)']},
+    {nome:'Jantar · Sopa de carne com legumes',time:'18h',foods:['100g acém em cubinhos','Cenoura + chuchu + cebola + tomate','Alho e temperos naturais','1 col. sopa macarrão cabelo de anjo']},
+  ],
+  4:[ // Quinta – Treino Superior 💪 + Cardio
+    {nome:'Café · Pão integral com ovo e tomate',time:'5h40',foods:['2 fatias pão integral','1 ovo mexido','Tomate fatiado + sal','Café preto']},
+    {nome:'Almoço · Alcatra grelhada com batata-doce e salada',time:'10h',foods:['150g alcatra grelhada','100g batata-doce cozida','Alface + pepino + tomate + cenoura + limão']},
+    {nome:'Tarde · Iogurte + maçã',time:'Tarde',foods:['150g iogurte natural desnatado','1 maçã fuji']},
+    {nome:'Jantar · Patinho moído com abobrinha e ovo',time:'18h',foods:['100g patinho moído','Abobrinha refogada','1 ovo mexido junto','Alho e sal']},
+  ],
+  5:[ // Sexta – Treino Superior 💪
+    {nome:'Café · Ovos mexidos com tomate + banana',time:'5h40',foods:['2 ovos mexidos com tomate e cebolinha','1 banana-prata','Café preto']},
+    {nome:'Almoço · Músculo desfiado com arroz, feijão e salada',time:'10h',foods:['150g músculo desfiado','3 col. arroz · 2 col. feijão','Alface + beterraba + cenoura + azeite e limão']},
+    {nome:'Tarde · Iogurte + laranja',time:'Tarde',foods:['200g iogurte natural desnatado','1 laranja ou tangerina']},
+    {nome:'Jantar · Coxão mole grelhado com salada grande',time:'18h',foods:['130g coxão mole grelhado','Alface + tomate + pepino + cenoura + beterraba','Azeite + limão + sal']},
+  ],
+  6:[ // Sábado – Horário livre
+    {nome:'Café · Panqueca de banana com ovo',time:'Horário livre',foods:['2 bananas amassadas + 2 ovos','Mistura tudo, faz na frigideira sem óleo','Mel ou canela (opcional)']},
+    {nome:'Almoço completo – dia mais tranquilo',time:'Horário livre',foods:['Proteína à escolha','Arroz + feijão','Salada à vontade: alface, tomate, cenoura, beterraba']},
+    {nome:'Tarde · Fruta + ovo cozido',time:'Tarde',foods:['Maçã ou laranja ou banana','1 ovo cozido']},
+    {nome:'Jantar · Omelete de forno com legumes',time:'18h',foods:['3 ovos','Tomate + cenoura + cebola picados','1 fatia queijo branco']},
+  ],
+  0:[ // Domingo – Descanso
+    {nome:'Café reforçado de domingo',time:'Horário livre',foods:['2 ovos mexidos com tomate','2 fatias pão integral + queijo branco','1 laranja ou suco natural']},
+    {nome:'Almoço em família · Come bem, com inteligência',time:'Almoço',foods:['Começa sempre pela salada','Proteína + arroz e feijão','Evite frituras e refrigerante']},
+    {nome:'Jantar · Salada de atum ou ovos cozidos',time:'18h',foods:['1 lata atum (único dia!) ou 3 ovos cozidos','Alface + tomate + pepino + cenoura + limão']},
+  ],
+};
+
+function getCardapio(dow){return CARDAPIO_SEMANA[dow]||CARDAPIO_SEMANA[1];}
+
+function renderNutri(dow){
+  const refeicoes=getCardapio(dow);
+  const mk=dayKey('meals',dow);
+  let ms=ld(mk,{});
+  const c=document.getElementById('nutri-meals-card');
+  c.innerHTML='';
+  refeicoes.forEach((r,i)=>{
+    const done=!!ms[i];
+    const div=document.createElement('div');
+    div.className='meal-item';
+    div.innerHTML=`<div class="meal-check ${done?'done':''}" onclick="toggleMeal(${i},${dow})"></div>
+      <div class="meal-info">
+        <div class="meal-time">${r.time}</div>
+        <div class="meal-name">${r.nome}</div>
+        <div class="meal-foods">${r.foods.map(f=>'• '+f).join('<br>')}</div>
+      </div>`;
+    c.appendChild(div);
+  });
+  const done=Object.values(ms).filter(Boolean).length;
+  document.getElementById('meals-count').textContent=done+'/'+refeicoes.length;
+  const ak=dayKey('agua',dow);
+  const agua=ld(ak,0);
+  document.getElementById('agua-val').textContent=(agua*0.25).toFixed(2).replace('.',',')+'L';
+  renderWaterDrops(agua);
+  const sk2=dayKey('supl',dow);
+  let ss=ld(sk2,{});
+  [0,1,2].forEach(i=>{const el=document.getElementById('supl'+i);if(el)el.checked=!!ss[i];});
+  renderNutriChecks(dow);
+}
+
+function renderWaterDrops(count){
+  const c=document.getElementById('water-drops');
+  c.innerHTML='';
+  for(let i=0;i<10;i++){
+    const d=document.createElement('span');
+    d.className='drop'+(i<count?'':' empty');
+    d.textContent='💧';
+    c.appendChild(d);
+  }
+}
+
+function toggleMeal(i,dow){
+  const mk=dayKey('meals',dow);
+  let s=ld(mk,{});s[i]=!s[i];sv(mk,s);renderNutri(dow);
+}
+
+function changeAgua(delta){
+  const ak=dayKey('agua',currentNutriDow);
+  let v=Math.max(0,Math.min(16,ld(ak,0)+delta));
+  sv(ak,v);
+  document.getElementById('agua-val').textContent=(v*0.25).toFixed(2).replace('.',',')+'L';
+  renderWaterDrops(v);
+}
+
+function saveSupl(i,checked){
+  const sk=dayKey('supl',currentNutriDow);
+  let s=ld(sk,{});s[i]=checked;sv(sk,s);
+}
+
+function savePeso(){
+  const p=document.getElementById('peso-in').value;
+  if(!p)return;
+  let hist=ld('peso_hist',[]);
+  hist.unshift({date:todayStr,peso:parseFloat(p),cintura:document.getElementById('cintura-in').value||null,quadril:document.getElementById('quadril-in').value||null});
+  if(hist.length>30)hist=hist.slice(0,30);
+  sv('peso_hist',hist);
+  document.getElementById('peso-in').value='';
+  document.getElementById('cintura-in').value='';
+  document.getElementById('quadril-in').value='';
+  renderPesoHist();
+}
+
+function renderPesoHist(){
+  const hist=ld('peso_hist',[]);
+  const c=document.getElementById('peso-hist-card');
+  if(!hist.length){c.innerHTML='<div class="empty"><span class="empty-emo">⚖️</span>Nenhum registro ainda.<br>Comece salvando seu peso!</div>';return;}
+  c.innerHTML='';
+  hist.forEach(h=>{
+    const d=new Date(h.date+'T12:00:00');
+    const row=document.createElement('div');
+    row.className='hist-row';
+    let extra='';
+    if(h.cintura)extra+=' · Cin: '+h.cintura+'cm';
+    if(h.quadril)extra+=' · Qua: '+h.quadril+'cm';
+    row.innerHTML=`<span class="hist-date">${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}</span>
+      <span class="hist-kg">${h.peso} kg</span>
+      <span class="hist-extra">${extra}</span>`;
+    c.appendChild(row);
+  });
+}
+
+const NUTRI_CHECKS_LIST=['Fui para a academia','Segui o cardápio principal','Tomei creatina','Tomei Morozil e Cactin','Bebi 2,5L de água'];
+function renderNutriChecks(dow){
+  const key=dayKey('nchecks',dow);
+  let s=ld(key,{});
+  const c=document.getElementById('nutri-checks-card');
+  c.innerHTML='';
+  NUTRI_CHECKS_LIST.forEach((ch,i)=>{
+    const done=!!s[i];
+    const row=document.createElement('div');
+    row.className='task-item';
+    row.onclick=()=>toggleNCheck(i,dow);
+    row.innerHTML=`<div class="task-check ${done?'done':''}"></div><span class="task-text ${done?'done':''}">${ch}</span>`;
+    c.appendChild(row);
+  });
+}
+
+function toggleNCheck(i,dow){
+  const key=dayKey('nchecks',dow);
+  let s=ld(key,{});s[i]=!s[i];sv(key,s);renderNutriChecks(dow);
+}
+
+// LISTA DE COMPRAS
+const SHOP_DEFAULT=[
+  {cat:'🥚 Proteínas',items:['Ovos (dúzia)','Frango (peito ou filé)','Carne bovina magra','Peixe (tilápia, atum ou salmão)']},
+  {cat:'🥛 Laticínios',items:['Iogurte grego natural (sem açúcar)','Whey protein (se usar)']},
+  {cat:'🌾 Carboidratos',items:['Arroz (branco ou integral)','Pão integral','Batata doce','Feijão (carioca ou preto)','Granola sem açúcar']},
+  {cat:'🥦 Legumes e verduras',items:['Brócolis','Abobrinha','Cenoura','Alface','Rúcula','Tomate']},
+  {cat:'🍌 Frutas',items:['Banana','Maçã','Laranja']},
+  {cat:'🫙 Outros',items:['Azeite de oliva','Castanha-do-pará ou mix de castanhas','Sal, temperos naturais']},
+  {cat:'💊 Suplementos',items:['Creatina (5g/dia)','Morozil','Cactin']},
+];
+
+function renderShop(){
+  const state=ld('shop_state',{});
+  const c=document.getElementById('shop-card');
+  c.innerHTML='';
+  SHOP_DEFAULT.forEach(cat=>{
+    const catDiv=document.createElement('div');
+    catDiv.style.cssText='padding:10px 16px 4px;font-size:12px;font-weight:800;color:var(--text2);border-bottom:1px solid #f1f5f9;';
+    catDiv.textContent=cat.cat;
+    c.appendChild(catDiv);
+    cat.items.forEach(item=>{
+      const done=!!state[item];
+      const row=document.createElement('div');
+      row.className='shop-item';
+      row.onclick=()=>toggleShop(item);
+      row.innerHTML=`<div class="shop-check ${done?'done':''}"></div>
+        <span class="shop-text ${done?'done':''}">${item}</span>`;
+      c.appendChild(row);
+    });
+  });
+}
+
+function toggleShop(item){
+  let s=ld('shop_state',{});s[item]=!s[item];sv('shop_state',s);renderShop();
+}
+function resetShop(){sv('shop_state',{});renderShop();}
+
+function renderNutriNav(){
+  const nav=document.getElementById('week-nav-nutri');
+  nav.innerHTML='';
+  [1,2,3,4,5,6,0].forEach(d=>{
+    const btn=document.createElement('div');
+    btn.className='wday'+(d===currentNutriDow?' active':'');
+    btn.textContent=DAYS_SHORT[d];
+    btn.onclick=()=>{
+      currentNutriDow=d;
+      document.querySelectorAll('#week-nav-nutri .wday').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderNutri(d);
+    };
+    nav.appendChild(btn);
+  });
+}
+
+// CERTIFICADOS
+const AREA_INFO={ia:{ico:'🤖',badge:'b-amber',label:'IA/ML'},claude:{ico:'🦾',badge:'b-purple',label:'Claude'},cloud:{ico:'☁️',badge:'b-blue',label:'Cloud'},prog:{ico:'💻',badge:'b-green',label:'Prog'},outro:{ico:'📜',badge:'b-gray',label:'Outro'}};
+function renderCerts(){
+  const certs=ld('certs_list',[]);
+  const c=document.getElementById('certs-card');
+  if(!certs.length){c.innerHTML='<div class="empty"><span class="empty-emo">🏅</span>Nenhum certificado ainda.<br>Você está começando agora!</div>';return;}
+  c.innerHTML='';
+  certs.forEach((cert,i)=>{
+    const a=AREA_INFO[cert.area]||AREA_INFO.outro;
+    const div=document.createElement('div');
+    div.className='cert-item';
+    div.innerHTML=`<div class="cert-emo" style="background:#f8fafc;">${a.ico}</div>
+      <div class="cert-info">
+        <div class="cert-name">${cert.name}</div>
+        <div class="cert-meta">${cert.platform} · ${cert.date} <span class="badge ${a.badge}">${a.label}</span></div>
+      </div>
+      <button onclick="removeCert(${i})" style="background:none;border:none;cursor:pointer;font-size:20px;color:#cbd5e1;padding:4px;">×</button>`;
+    c.appendChild(div);
+  });
+}
+function openCertModal(){document.getElementById('cert-modal').classList.add('open');}
+function closeCertModal(){document.getElementById('cert-modal').classList.remove('open');}
+function saveCert(){
+  const name=document.getElementById('c-name').value.trim();
+  if(!name)return;
+  const certs=ld('certs_list',[]);
+  certs.push({name,platform:document.getElementById('c-plat').value.trim(),date:document.getElementById('c-date').value.trim(),area:document.getElementById('c-area').value});
+  sv('certs_list',certs);
+  closeCertModal();renderCerts();
+  ['c-name','c-plat','c-date'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('c-area').value='';
+}
+function removeCert(i){const certs=ld('certs_list',[]);certs.splice(i,1);sv('certs_list',certs);renderCerts();}
+
+// INIT
+document.getElementById('today-date-str').textContent=DAYS_FULL[todayDow]+', '+now.getDate()+' de '+MONTHS[now.getMonth()];
+renderTodayTasks();
+renderStudyToday();
+const initStudyDow=todayDow>=1&&todayDow<=5?todayDow:1;
+document.querySelectorAll('#week-nav-study .wday')[initStudyDow-1].classList.add('active');
+renderStudyDay(initStudyDow);
+renderNutriNav();
+renderNutri(currentNutriDow);
+renderPesoHist();
+renderShop();
+renderCerts();
+</script>
+</body>
+</html>
