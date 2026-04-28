@@ -920,13 +920,56 @@ function toggleNCheck(i,dow){
 
 // LISTA DE COMPRAS
 const SHOP_DEFAULT=[
-  {cat:'🥚 Proteínas',items:['Ovos (dúzia)','Frango (peito ou filé)','Carne bovina magra','Peixe (tilápia, atum ou salmão)']},
-  {cat:'🥛 Laticínios',items:['Iogurte grego natural (sem açúcar)','Whey protein (se usar)']},
-  {cat:'🌾 Carboidratos',items:['Arroz (branco ou integral)','Pão integral','Batata doce','Feijão (carioca ou preto)','Granola sem açúcar']},
-  {cat:'🥦 Legumes e verduras',items:['Brócolis','Abobrinha','Cenoura','Alface','Rúcula','Tomate']},
-  {cat:'🍌 Frutas',items:['Banana','Maçã','Laranja']},
-  {cat:'🫙 Outros',items:['Azeite de oliva','Castanha-do-pará ou mix de castanhas','Sal, temperos naturais']},
-  {cat:'💊 Suplementos',items:['Creatina (5g/dia)','Morozil','Cactin']},
+  {cat:'🥚 Proteínas',items:[
+    'Ovos – 2 dúzias (uso quase todo dia)',
+    'Músculo bovino – 300g (seg + sex)',
+    'Patinho moído – 370g (seg 120g + ter 150g + qui 100g)',
+    'Alcatra – 270g (ter 120g + qui 150g)',
+    'Coxão mole – 270g (qua 140g + sex 130g)',
+    'Acém – 100g (qua, sopa)',
+    'Atum em lata – 1 lata (só domingo)',
+    'Queijo branco – 1 pacote (seg + dom)',
+  ]},
+  {cat:'🥛 Laticínios',items:[
+    'Iogurte natural desnatado – 750g (ter 200g + qua 200g + sex 200g + qui 150g)',
+  ]},
+  {cat:'🌾 Carboidratos',items:[
+    'Arroz – 1 pacote 1kg (semana toda)',
+    'Feijão – 500g',
+    'Pão integral – 1 pacote (qui + sáb)',
+    'Batata-doce – 3 unid. médias (ter 80g + qui 100g)',
+    'Tapioca (goma) – 1 pacote 500g (seg)',
+    'Macarrão cabelo de anjo – 1 pacote (qua, sopa)',
+  ]},
+  {cat:'🥦 Legumes e verduras',items:[
+    'Abobrinha – 2 unid. (seg + qui + sáb)',
+    'Cenoura – 1 saco (vários dias)',
+    'Alface – 1 pé grande (semana toda)',
+    'Tomate – 6 unid. (semana toda)',
+    'Pepino – 2 unid. (ter + qui + dom)',
+    'Beterraba – 2 unid. (ter + sex)',
+    'Cebola – 2 unid. (qua sopa + sáb)',
+    'Chuchu – 1 unid. (qua, sopa)',
+    'Alho – 1 cabeça',
+    'Limão – 6 unid. (semana toda)',
+  ]},
+  {cat:'🍌 Frutas',items:[
+    'Banana-prata – 1 cacho (ter café + qua café + sáb)',
+    'Maçã fuji – 4 unid. (seg lanche + qui lanche + dom)',
+    'Laranja-baía – 4 unid. (seg café + qua lanche + sex lanche)',
+  ]},
+  {cat:'🫙 Outros',items:[
+    'Azeite de oliva – 1 garrafa',
+    'Canela em pó – 1 unid. (ter + qua)',
+    'Mel – 1 unid. (sáb, opcional)',
+    'Temperos naturais (alho, sal, cominho)',
+    'Café preto – 1 pacote',
+  ]},
+  {cat:'💊 Suplementos',items:[
+    'Creatina – 35g/semana (5g × 7 dias)',
+    'Morozil – conforme orientação da nutri',
+    'Cactin – conforme orientação da nutri',
+  ]},
 ];
 
 function renderShop(){
